@@ -1,0 +1,14 @@
+{
+    "name": "omatech/editora-utils",
+    "description": "Utils package",
+		"minimum-stability":"dev",
+    "require": {
+        "doctrine/dbal": "~2.5"
+    },
+		"autoload": {
+    "psr-4": {
+        "Omatech\\": "src/Omatech"
+				}
+    }
+}
+
