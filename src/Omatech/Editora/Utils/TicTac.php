@@ -13,7 +13,7 @@ class TicTac
 
 		function tic($id) 
 		{// Keeps the start time in a global variable named after the id
-			if (self::$enabled) 
+			if ($this->$enabled) 
 			{
 				$GLOBALS['omatech_editora__utils_timings_start_'.$id]=microtime(true);
 			}
@@ -21,7 +21,7 @@ class TicTac
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 		function tac($id) { // Keeps the end time in a global variable named after the id
-			if (self::$enabled) 
+			if ($this->$enabled) 
 			{
 				$GLOBALS['omatech_editora_utils_timings_end_'.$id]=microtime(true);
 			}
@@ -29,7 +29,7 @@ class TicTac
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 		function get_time($id) {
-			if (self::$enabled) 
+			if ($this->$enabled) 
 			{
 				if (isset($GLOBALS['omatech_editora__utils_timings_start_'.$id]) && isset($GLOBALS['omatech_editora_utils_timings_end_'.$id])) {
 					$start_microtime=$GLOBALS['omatech_editora_utils_timings_start_'.$id];
