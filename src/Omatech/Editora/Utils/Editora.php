@@ -142,5 +142,13 @@ class Editora {
 				}
 		}
 
+		static function comproba_idioma($lg) 
+		{
+			global $array_langs;
+			if (in_array ($lg,$array_langs,true)) {
+				return true;
+			}
+			return false;
+		}
 	
 }

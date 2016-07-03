@@ -15,18 +15,18 @@ class Urls {
 
 			/* LANGUAGE */
 			////////////////////////////////
-			if(comproba_idioma($laurl[1])) {
+			if(\Omatech\Editora\Utils\Editora::comproba_idioma($laurl[1])) {
 				$lg = $laurl[1];
 				$_SESSION['language']=$lg;
 			}
 			else {
 				if (isset($laurl[1]) && $laurl[1]=='') { //llavors estem a la Home
-					if (isset($_SESSION['language']) && comproba_idioma($_SESSION['language'])) $lg=$_SESSION['language'];
+					if (isset($_SESSION['language']) && \Omatech\Editora\Utils\Editora::comproba_idioma($_SESSION['language'])) $lg=$_SESSION['language'];
 					else $lg=default_idioma();
 					$laurl[1]=$lg;
 				}
 				else {
-					if (isset($_SESSION['language']) && comproba_idioma($_SESSION['language'])) $lg=$_SESSION['language'];
+					if (isset($_SESSION['language']) && \Omatech\Editora\Utils\Editora::comproba_idioma($_SESSION['language'])) $lg=$_SESSION['language'];
 					else $lg=default_idioma();
 					$objecte=$laurl[1];
 					$laurl[2]=$objecte;
@@ -47,7 +47,7 @@ class Urls {
 			/* OBJECT */
 			if(!isset($laurl[5]) && !\Omatech\Editora\Utils\Editora::control_objecte($objecte, $lg)) 
 			{// 1->idioma, 2->url_maca de la instancia, 3->paginacio, 4->format, 5->accio
-				if (isset($_SESSION['language']) && comproba_idioma($_SESSION['language'])) $lg=$_SESSION['language'];
+				if (isset($_SESSION['language']) && \Omatech\Editora\Utils\Editora::comproba_idioma($_SESSION['language'])) $lg=$_SESSION['language'];
 				else $laurl[1]=default_idioma();
 				$laurl[2]='error';
 				$laurl[5]='error';
