@@ -17,6 +17,6 @@ $tictac->tac('sleep2');
 
 $tictac->tac('inicial');
 
-$tictac->get_full_stats();
+echo $tictac->get_full_stats();
 
 
