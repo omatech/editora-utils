@@ -11,9 +11,7 @@ namespace Omatech\Editora\Utils;
 
 class Ips {
 		
-		
-
-		function get_real_ip() {
+		static function get_real_ip() {
 			if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] != '') {
 				$client_ip =
 				(!empty($_SERVER['REMOTE_ADDR'])) ?
