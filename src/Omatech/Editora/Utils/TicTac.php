@@ -40,26 +40,29 @@ class TicTac
 			}  
 		}
 
-		//////////////////////////////////////////////////////////////////////////////////////////
-		function get_full_stats() {
-			$ret="\n********************TIMINGS********************\n";
-			$anterior=array();
-			$global_array=array();
-			$i=0;
-			
-			foreach ($_REQUEST as $key=>$value) { // per cada variable global comprovem si es de timing, si es aixi l'afegim a la sortida
-				if (stripos($key, 'omatech_editora_utils_timings_start')!==false) {
-					$global_array[$i]=substr($key,36);
-					$i++;
+		function get_full_stats() 
+		{
+			$ret='';
+			if ($this->enabled)
+			{
+				$ret="\n********************TIMINGS********************\n";
+				$anterior=array();
+				$global_array=array();
+				$i=0;
+
+				foreach ($_REQUEST as $key=>$value) { // per cada variable global comprovem si es de timing, si es aixi l'afegim a la sortida
+					if (stripos($key, 'omatech_editora_utils_timings_start')!==false) {
+						$global_array[$i]=substr($key,36);
+						$i++;
+					}
 				}
-			}
 
-			for ($x=0;$x<$i;$x++) {
-				$ret.=$global_array[$x]."\n";
-				$ret.='Start: '.$_REQUEST['omatech_editora_utils_timings_start_'.$global_array[$x]].'  End: '.$_REQUEST['omatech_editora_utils_timings_end_'.$global_array[$x]].' Time: '.round(($_REQUEST['omatech_editora_utils_timings_end_'.$global_array[$x]]-$_REQUEST['omatech_editora_utils_timings_start_'.$global_array[$x]])*1000,4)."ms (".round(($_REQUEST['omatech_editora_utils_timings_end_'.$global_array[$x]]-$_REQUEST['omatech_editora_utils_timings_start_'.$global_array[$x]]),4)." s)\n\n";
+				for ($x=0;$x<$i;$x++) {
+					$ret.=$global_array[$x]."\n";
+					$ret.='Start: '.$_REQUEST['omatech_editora_utils_timings_start_'.$global_array[$x]].'  End: '.$_REQUEST['omatech_editora_utils_timings_end_'.$global_array[$x]].' Time: '.round(($_REQUEST['omatech_editora_utils_timings_end_'.$global_array[$x]]-$_REQUEST['omatech_editora_utils_timings_start_'.$global_array[$x]])*1000,4)."ms (".round(($_REQUEST['omatech_editora_utils_timings_end_'.$global_array[$x]]-$_REQUEST['omatech_editora_utils_timings_start_'.$global_array[$x]]),4)." s)\n\n";
+				}
+				$ret.="********************END TIMINGS********************\n";
 			}
-			$ret.="********************END TIMINGS********************\n";
-
 			return $ret;
 		}
 
