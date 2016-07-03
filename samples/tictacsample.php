@@ -1,7 +1,7 @@
 <?php
 
-//require '../../../autoload.php';
-require '../vendor/autoload.php';
+require '../../../autoload.php';
+//require '../vendor/autoload.php';
 use Omatech\Editora\Utils;
 
 $tictac=new Omatech\Editora\Utils\TicTac(true);
