@@ -302,34 +302,6 @@ class Strings {
 			return $ret;
 		}
 
-		static function urlnicify( $url, $id = '') {
-			if ('' == $url) return $url;
-			$url=strip_tags($url);
-			$url=filter_text($url);
-			$temp=explode("/",$url);
-			$url=$temp[count($temp)-1];
-			$url = trim($url);
-			$url = preg_replace('|[^a-z0-9-~+_. #=&;,/:]|i', '', $url);
-			$url = str_replace('/', '', $url);
-			$url = str_replace(' ', '-', $url);
-			$url = str_replace('&', '', $url);
-			$url = str_replace("'", "", $url);
-			$url = str_replace(';//', '://', $url);
-			$url = preg_replace('/&([^#])(?![a-z]{2,8};)/', '&#038;$1', $url);
-
-			$url=strtolower($url);
-
-			//Últims canvis
-
-			 $url = trim(ereg_replace("[^ A-Za-z0-9_-]", "", $url)); 
-			 $url = ereg_replace("[ \t\n\r]+", "-", $url);
-			 $url = ereg_replace("[ -]+", "-", $url);
-
-			if ($id == '')
-				return $url;
-
-			return $url."-".$id;
-		}
 
 		static function clean_title($title) {
 			$ret=$title;
