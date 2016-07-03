@@ -109,14 +109,15 @@ class Editora {
 					}
 */				
 				
+						$row=self::$conn->fetchAssoc($sql);
+						if ($row)
+						{
+								$_REQUEST['inst_id_from_url']=$row['id'];
+								return $row['id'];
+						}
+
 				}
 
-				$row=self::$conn->fetchAssoc($sql);
-				if ($row)
-				{
-						$_REQUEST['inst_id_from_url']=$row['id'];
-						return $row['id'];
-				}
 				
 				$sql="select distinct inst_id as id from omp_niceurl n, omp_instances i where n.niceurl='".$url."' and inst_id=i.id";
 				if (isset($_REQUEST['req_info']) && $_REQUEST['req_info']==0) $sql.=" and i.status = 'O'";
