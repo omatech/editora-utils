@@ -18,6 +18,18 @@ class Strings {
 				 return join("",array_slice($ar[0],$start));
 			 }
 		}
+		
+		static function is_really_set(&$var = null) 
+		{
+				if (!isset($var)) return false;
+				if (is_null($var)) return false;
+				if (empty($var)) return false;
+				if (is_array($var) && sizeof($var) == 0) return false;
+				if (is_object($var) && count(get_object_vars($var))==0) return false;
+				if ($var === false) return false;
+
+				return true;
+		}
 
 
 		static function urlnicify( $url, $id = '') 
