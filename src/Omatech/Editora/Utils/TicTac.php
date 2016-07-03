@@ -16,7 +16,6 @@ class TicTac
 			if ($this->enabled) 
 			{
 				$GLOBALS['omatech_editora__utils_timings_start_'.$id]=microtime(true);
-				echo $GLOBALS['omatech_editora__utils_timings_start_'.$id]; die;
 			}
 		}
 
@@ -47,6 +46,8 @@ class TicTac
 			$anterior=array();
 			$global_array=array();
 			$i=0;
+			print_r($GLOBALS);
+			
 			foreach ($GLOBALS as $key=>$value) { // per cada variable global comprovem si es de timing, si es aixi l'afegim a la sortida
 				if (stripos($key, 'omatech_editora_utils_timings_start')!==false) {
 					$global_array[$i]=substr($key,14);
