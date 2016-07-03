@@ -50,14 +50,14 @@ class TicTac
 			
 			foreach ($GLOBALS as $key=>$value) { // per cada variable global comprovem si es de timing, si es aixi l'afegim a la sortida
 				if (stripos($key, 'omatech_editora_utils_timings_start')!==false) {
-					$global_array[$i]=substr($key,14);
+					$global_array[$i]=substr($key,36);
 					$i++;
 				}
 			}
 
 			for ($x=0;$x<$i;$x++) {
 				$ret.=$global_array[$x]."\n";
-				$ret.='Start: '.$GLOBALS['omatech_editora_utils_timings_end_'.$global_array[$x]].'  End: '.$GLOBALS['omatech_editora_utils_timings_end_'.$global_array[$x]].' Time: '.round(($GLOBALS['omatech_editora_utils_timings_end_'.$global_array[$x]]-$GLOBALS['omatech_editora_utils_timings_start_'.$global_array[$x]])*1000,4)."ms (".round(($GLOBALS['omatech_editora_utils_timings_end_'.$global_array[$x]]-$GLOBALS['omatech_editora_utils_timings_start_'.$global_array[$x]]),4)." s)\n\n";
+				$ret.='Start: '.$GLOBALS['omatech_editora_utils_timings_start_'.$global_array[$x]].'  End: '.$GLOBALS['omatech_editora_utils_timings_end_'.$global_array[$x]].' Time: '.round(($GLOBALS['omatech_editora_utils_timings_end_'.$global_array[$x]]-$GLOBALS['omatech_editora_utils_timings_start_'.$global_array[$x]])*1000,4)."ms (".round(($GLOBALS['omatech_editora_utils_timings_end_'.$global_array[$x]]-$GLOBALS['omatech_editora_utils_timings_start_'.$global_array[$x]]),4)." s)\n\n";
 			}
 			$ret.="********************END TIMINGS********************\n";
 
