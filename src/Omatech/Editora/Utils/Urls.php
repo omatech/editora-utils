@@ -6,9 +6,8 @@ class Urls {
 
 		static function extract_url_info() 
 		{
-			global $SITESLIST;
-			global $SITESLANG;
-
+			global $debug;
+			
 			$url = $_SERVER['REQUEST_URI'];
 			$l_step1 = explode('&', $url);
 			$l_step2 = explode('?', $l_step1[0]);
@@ -74,7 +73,10 @@ class Urls {
 			$_REQUEST['param2'] = (isset($laurl[4]) && $laurl[4])?$laurl[4]:'';
 			$_REQUEST['class'] = $laurl[5];
 
-			\Omatech\Editora\Utils\Debug::debug('LAURL:\n'.print_r($laurl_ultimate, true));
+			if ($debug)
+			{
+			  $debug->debug('LAURL:\n'.print_r($laurl_ultimate, true));
+			}
 			return $laurl_ultimate;
 		}
 
