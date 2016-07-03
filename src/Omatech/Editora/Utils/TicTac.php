@@ -16,6 +16,7 @@ class TicTac
 			if ($this->enabled) 
 			{
 				$GLOBALS['omatech_editora__utils_timings_start_'.$id]=microtime(true);
+				echo $GLOBALS['omatech_editora__utils_timings_start_'.$id]; die;
 			}
 		}
 
