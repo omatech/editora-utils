@@ -8,7 +8,7 @@ class TicTac
 
 		function __construct($enabled=true)
 		{
-				self::$enabled=$enabled;			
+				$this->enabled=$enabled;			
 		}
 
 		function tic($id) 
