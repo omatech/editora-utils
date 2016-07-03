@@ -19,7 +19,7 @@ class Strings {
 			 }
 		}
 		
-		static function is_really_set(&$var = null) 
+		static function not_empty(&$var = null) 
 		{
 				if (!isset($var)) return false;
 				if (is_null($var)) return false;

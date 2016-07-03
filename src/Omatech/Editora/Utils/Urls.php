@@ -57,8 +57,8 @@ class Urls {
 			}
 
 			/* PAGINATION */
-			if (\Omatech\Editora\Utils\Strings::is_really_set($_REQUEST['page'])) $pag_num = trim($_REQUEST['page']);
-			if (!\Omatech\Editora\Utils\Strings::is_really_set($pag_num) || is_nan($pag_num)) $pag_num = 1;
+			if (\Omatech\Editora\Utils\Strings::not_empty($_REQUEST['page'])) $pag_num = trim($_REQUEST['page']);
+			if (!\Omatech\Editora\Utils\Strings::not_empty($pag_num) || is_nan($pag_num)) $pag_num = 1;
 			$_SESSION['pagina_paginacio'] = $pag_num;
 
 			//Mapping
