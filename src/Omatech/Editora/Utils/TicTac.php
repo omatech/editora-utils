@@ -6,7 +6,7 @@ class TicTac
 {
 		var $enabled=true;
 
-		static function __construct($enabled=true)
+		function __construct($enabled=true)
 		{
 				self::$enabled=$enabled;			
 		}
