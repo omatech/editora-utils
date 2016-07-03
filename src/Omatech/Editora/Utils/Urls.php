@@ -45,7 +45,8 @@ class Urls {
 			}
 
 			/* OBJECT */
-			if(!isset($laurl[5]) && !control_objecte($objecte, $lg)) {// 1->idioma, 2->url_maca de la instancia, 3->paginacio, 4->format, 5->accio
+			if(!isset($laurl[5]) && !\Omatech\Editora\Utils\Editora::control_objecte($objecte, $lg)) 
+			{// 1->idioma, 2->url_maca de la instancia, 3->paginacio, 4->format, 5->accio
 				if (isset($_SESSION['language']) && comproba_idioma($_SESSION['language'])) $lg=$_SESSION['language'];
 				else $laurl[1]=default_idioma();
 				$laurl[2]='error';
