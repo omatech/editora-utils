@@ -6,7 +6,7 @@ class Editora {
 
 		static function control_objecte ($obj, $lg) 
 		{
-				$inst_id_from_url=get_inst_id_from_url($obj, $lg);
+				$inst_id_from_url=self::get_inst_id_from_url($obj, $lg);
 
 				if ($inst_id_from_url> 0) return true;
 				return false;
