@@ -16,7 +16,7 @@ class Editora {
 		{
         //echo 'HOLA default_object_accio';
 				global $dbh;
-				$id = get_inst_id_from_url ($obj, $lg);
+				$id = self::get_inst_id_from_url ($obj, $lg);
 				if(!$dbh) return 'error';
 
 				$sql="select c.tag
@@ -75,7 +75,6 @@ class Editora {
 						header("Location: ".URL_APLI.'/'.$lg.'/'.$row['niceurl']);
 						die();
 					}
-
 
 					//Si no tenim URL maca, l'obrim per identificador.
 					$sql="select distinct i.id as id from omp_instances i,omp_class_attributes ca, omp_attributes a where i.id='$url' and i.class_id=ca.class_id and atri_id=a.id and a.type='Z'";
