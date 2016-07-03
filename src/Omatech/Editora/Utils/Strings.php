@@ -340,5 +340,7 @@ class Strings {
 			<noscript>editmode</noscript>';
 		}
 		
-
+		static function checkCookieExist($name) {
+			return isset ($_COOKIE[$name]);
+		}
 }
