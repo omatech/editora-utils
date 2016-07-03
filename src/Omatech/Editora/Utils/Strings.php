@@ -348,5 +348,25 @@ class Strings {
 				$link .= '&#'.ord($letter).';';
 				return $link;
 		}
+		
+		
+		static function get_headerEM() {
+			return '<link rel="stylesheet" type="text/css" href="/css/front-edit.css" />
+			<script type="text/javascript" src="/js/front-edit.js"> </script>';
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////
+		static function get_linkEM() {
+			return '<a accesskey="z" href="javascript://" onclick="toggleEdit(this);" class="link-edit">Edit mode: OFF</a>';
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////
+		static function get_footerEM() {
+			return '<script type="text/javascript">
+				toggleStart();
+			</script>
+			<noscript>editmode</noscript>';
+		}
+		
 
 }
