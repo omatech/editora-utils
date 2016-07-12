@@ -52,7 +52,8 @@ class Urls {
 				$laurl[2]='error';
 				$laurl[5]='error';
 			}
-			if(!isset($laurl[5]) || !control_classe(trim($laurl[5]))) {// 1->idioma, 2->url_maca de la instancia, 3->paginacio, 4->format, 5->accio
+			if(!isset($laurl[5]) || !\Omatech\Editora\Utils\Editora::control_classe(trim($laurl[5]))) 
+			{// 1->idioma, 2->url_maca de la instancia, 3->paginacio, 4->format, 5->accio
 				$laurl[5]=\Omatech\Editora\Utils\Editora::default_object_accio($objecte, $lg);
 			}
 
