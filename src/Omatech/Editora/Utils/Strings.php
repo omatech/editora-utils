@@ -286,7 +286,7 @@ class Strings {
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////
-		function default_idioma () {
+		static function default_idioma () {
 			global $array_langs;
 			return $array_langs[0];
 		}
