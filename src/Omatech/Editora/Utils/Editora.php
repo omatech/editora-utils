@@ -25,7 +25,7 @@ class Editora {
         //echo 'HOLA default_object_accio';
 				//global $dbh;
 				$id = self::get_inst_id_from_url ($obj, $lg);
-				//if(!$dbh) return 'error';
+				if(!isset($id)) return 'error';
 
 				$sql="select c.tag
 				from omp_classes c
