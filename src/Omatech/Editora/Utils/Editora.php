@@ -6,6 +6,25 @@ class Editora {
 
 		private static $conn;
 		
+		public function __construct($conn)
+		{				
+				if (is_array($conn))
+				{
+						$config = new \Doctrine\DBAL\Configuration();
+						//..
+						$connectionParams = array(
+								'dbname' => $conn['dbname'],
+								'user' => $conn['dbuser'],
+								'password' => $conn['dbpass'],
+								'host' => $conn['dbhost'],
+								'driver' => 'pdo_mysql',
+								'charset' => 'utf8'
+						);
+						$conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);						
+				}
+				self::set_connection($conn);
+		}
+
 		static function set_connection($conn)
 		{
 				//var_dump($conn);
