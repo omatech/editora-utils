@@ -63,6 +63,16 @@ class Editora {
 		{
 			return 'html';
 		}
+		
+		static function get_nice_from_id($id = null, $lg = null){
+			$sql="select niceurl as id from omp_niceurl n, omp_instances i where i.id=inst_id and inst_id=".$id." and language='".$lg."'";
+			$row=self::$conn->fetchAssoc($sql);
+			
+			if(isset($row['id']))
+				return $row['id'];
+			else
+				return '';
+		}
 
 		static function get_inst_id_from_url ($url, $lg) 
 		{
