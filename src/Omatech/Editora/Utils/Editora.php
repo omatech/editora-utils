@@ -36,7 +36,7 @@ class Editora {
 				
 				if (!isset($language))
 				{
-					return ['type'=>'Home'];	
+					return ['type'=>'Home', 'class_tag'=>'Home'];	
 				}		
 				else
 				{// tenim idioma
