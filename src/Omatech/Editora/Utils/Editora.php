@@ -49,12 +49,14 @@ class Editora {
 						{// check valid urlnice
 								$nice_url=self::$conn->quote($nice_url);
 								$language=self::$conn->quote($language);
-								$sql="select *
+								$sql="select n.inst_id, n.niceurl, i.class_id, c.tag, i.key_fields nom_intern
 								from omp_niceurl n
 								, omp_instances i
+								, omp_classes c
 								where n.language = $language
-								and n.niceurl = $niceurl
+								and n.niceurl = $nice_url
 								and i.id=n.inst_id
+								and i.class_id=c.id
 								";
 								
 								$row=self::$conn->fetchAssoc($sql);
@@ -62,8 +64,9 @@ class Editora {
 								{
 										return ['type'=>'Instance'
 											, 'id'=>$row['inst_id']
-											, 'class_name'=>ucfirst($row['tag'])
+											, 'class_tag'=>ucfirst($row['tag'])
 											, 'class_id'=>$row['class_id']
+											, 'nom_intern'=>$row['nom_intern']
 											, 'language'=>$language
 											];
 								}
