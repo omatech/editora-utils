@@ -31,6 +31,54 @@ class Editora {
 				self::$conn=$conn;
 		}
 		
+		static function get_url_data($language, $nice_url)
+		{
+				
+				if (!isset($language))
+				{
+					return ['type'=>'Home'];	
+				}		
+				else
+				{// tenim idioma
+						if (!isset($nice_url))
+						{
+								return ['type'=>'ChangeLanguage'
+								, 'language'=>$language];
+						}
+						else
+						{// check valid urlnice
+								$nice_url=self::$conn->quote($nice_url);
+								$language=self::$conn->quote($language);
+								$sql="select *
+								from omp_niceurl n
+								, omp_instances i
+								where n.language = $language
+								and n.niceurl = $niceurl
+								and i.id=n.inst_id
+								";
+								
+								$row=self::$conn->fetchAssoc($sql);
+								if ($row)
+								{
+										return ['type'=>'instance'
+											, 'id'=>$row['inst_id']
+											, 'class_name'=>ucfirst($row['tag'])
+											, 'class_id'=>$row['class_id']
+											, 'language'=>$language
+											];
+								}
+								else
+								{
+										return ['type'=>'Error', 'language'=>$language];
+								}						
+						}
+				}
+
+							//echo $sql;
+				$row=self::$conn->fetchAssoc($sql);
+				
+		}
+		
 		static function control_objecte ($obj, $lg) 
 		{
 				$inst_id_from_url=self::get_inst_id_from_url($obj, $lg);
