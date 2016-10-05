@@ -60,7 +60,7 @@ class Editora {
 								$row=self::$conn->fetchAssoc($sql);
 								if ($row)
 								{
-										return ['type'=>'instance'
+										return ['type'=>'Instance'
 											, 'id'=>$row['inst_id']
 											, 'class_name'=>ucfirst($row['tag'])
 											, 'class_id'=>$row['class_id']
