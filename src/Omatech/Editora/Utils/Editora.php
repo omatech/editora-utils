@@ -110,17 +110,7 @@ class Editora {
 						return $row['tag'];
 				}
 				return 'error';
-/*
- 				$result = mysql_query($sql,$dbh);
- 
-				if (!$result) return 'error';
 
-				if ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-					return $row['tag'];
-				}
-					else return 'error';
- 
- */
 		}
 
 		static function control_classe ($class) 
