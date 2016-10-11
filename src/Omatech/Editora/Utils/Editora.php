@@ -116,62 +116,6 @@ class Editora {
 						return '';
 		}
 
-		protected function get_attr_info($key)
-		{
-				
-				if (is_numeric($key))
-				{
-						$key=self::$conn->quote($key);
-						$sql = "SELECT * FROM omp_attributes where id=$key";
-				}
-				else
-				{
-						$key=self::$conn->quote($key);
-						$sql = "SELECT * FROM omp_attributes where name=$key";
-				}
-				return self::$conn->fetchAssoc($sql);
-		}
-
-		protected function get_attr_id($key) 
-		{// get attribute id from key or empty string		
-				if (is_numeric($key))
-						return $key;
-
-				$key=self::$conn->quote($key);
-				$sql = "select id from omp_attributes where name=$key";
-				$row = self::$conn->fetchAssoc($sql);
-
-				if (isset($row['id']))
-						return $row['id'];
-				else
-						return '';
-		}
-
-		public function get_inst_id_from_value($class_tag, $attr_key, $value) 
-	  {// retorna -1 si no existeix la instancia d'aquesta class o el id si existeix
-				$class_tag = self::$conn->quote($class_tag);
-				$value = self::$conn->quote($value);
-
-				$attr_info = self::get_attri_info($attr_key);
-
-				$sql = "SELECT i.id
-		FROM omp_instances i
-		, omp_classes c
-		, omp_values v
-		WHERE 
-		 i.class_id = c.id
-		AND c.tag=$class_tag
-		AND v.inst_id = i.id
-		AND v.atri_id = ".$attr_info['id']."
-		AND v.text_val = $value";
-
-				$row = self::$conn->fetchAssoc($sql);
-
-				if ($row) {
-						return $row['id'];
-				}
-				return -1;
-		}
 
 		static function get_inst_id_from_url($url, $lg) {
 				if ($url == 'home')
