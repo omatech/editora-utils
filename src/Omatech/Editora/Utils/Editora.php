@@ -32,9 +32,22 @@ class Editora {
 				if (!isset($language)) {
 						return ['type' => 'Home', 'class_tag' => 'Home'];
 				} else {// tenim idioma
-						if (!isset($nice_url)) {
-								return ['type' => 'ChangeLanguage'
-									, 'language' => $language];
+						if (!isset($nice_url)) 
+						{
+								$language = self::$conn->quote($language);
+								$sql="select count(*) num
+								from omp_niceurl n
+								where n.language=$language
+								";
+								$row=self::$conn->fetchAssoc($sql);
+								if ($row['num']==0)
+								{// error language not found!
+										return ['type' => 'Error', 'language' => $language];
+								}
+								else
+								{// change language ok
+								  return ['type' => 'ChangeLanguage', 'language' => $language];										
+								}
 						} else {// check valid urlnice
 								$nice_url = self::$conn->quote($nice_url);
 								$language = self::$conn->quote($language);
