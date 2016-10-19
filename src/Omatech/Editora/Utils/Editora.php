@@ -27,6 +27,16 @@ class Editora {
 				//var_dump($conn);
 				self::$conn = $conn;
 		}
+		
+		static function other_languages_url($inst_id, $lang)
+		{// return an array of language, niceurl
+				$sql="select language, niceurl
+				from omp_niceurl
+				where inst_id=$inst_id
+				and language!='$lang'
+				";
+				return self::$conn->fetchAll($sql);
+		}
 
 		static function get_url_data($language, $nice_url) {
 				if (!isset($language)) {
@@ -46,7 +56,8 @@ class Editora {
 								}
 								else
 								{// change language ok
-								  return ['type' => 'ChangeLanguage', 'language' => $language];										
+								  return ['type' => 'Home', 'class_tag' => 'Home', 'language' => $language];
+									//return ['type' => 'ChangeLanguage', 'language' => $language];										
 								}
 						} else {// check valid urlnice
 								$nice_url = self::$conn->quote($nice_url);
