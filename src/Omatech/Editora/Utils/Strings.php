@@ -37,7 +37,7 @@ class Strings {
 			if ('' == $url) return $url;
 			$url=trim($url);
 			$url=strip_tags($url);
-			$url=filter_text($url);
+			$url=self::filter_text($url);
 			$temp=explode("/",$url);
 			$url=$temp[count($temp)-1];
 
