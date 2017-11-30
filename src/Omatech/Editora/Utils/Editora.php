@@ -2,6 +2,8 @@
 
 namespace Omatech\Editora\Utils;
 
+use PDO;
+
 class Editora {
 
 		private static $conn;
@@ -32,10 +34,15 @@ class Editora {
 		{// return an array of language, niceurl
 				$sql="select language, niceurl
 				from omp_niceurl
-				where inst_id=$inst_id
-				and language!='$lang'
+				where inst_id=:inst_id
+				and language!=:lang
 				";
-				return self::$conn->fetchAll($sql);
+
+                $prepare = self::$conn->prepare($sql);
+                $prepare->bindParam(':lang', $lang, PDO::PARAM_STR);
+                $prepare->bindParam(':inst_id', $inst_id, PDO::PARAM_INT);
+                $prepare->execute();
+				return $prepare->fetchAll();
 		}
 
 		static function get_url_data($language, $nice_url) {
@@ -44,12 +51,16 @@ class Editora {
 				} else {// tenim idioma
 						if (!isset($nice_url)) 
 						{
-								$language = self::$conn->quote($language);
 								$sql="select count(*) num
 								from omp_niceurl n
-								where n.language=$language
+								where n.language=:language
 								";
-								$row=self::$conn->fetchAssoc($sql);
+
+                                $prepare = self::$conn->prepare($sql);
+                                $prepare->bindParam(':language', $language, PDO::PARAM_STR);
+                                $prepare->execute();
+								$row=$prepare->fetch();
+
 								if ($row['num']==0)
 								{// error language not found!
 										return ['type' => 'Error', 'language' => $language];
@@ -66,13 +77,18 @@ class Editora {
 								from omp_niceurl n
 								, omp_instances i
 								, omp_classes c
-								where n.language = $language
-								and n.niceurl = $nice_url
+								where n.language = :language
+								and n.niceurl = :nice_url
 								and i.id=n.inst_id
 								and i.class_id=c.id
 								";
 
-								$row = self::$conn->fetchAssoc($sql);
+                                $prepare = self::$conn->prepare($sql);
+                                $prepare->bindParam(':language', $language, PDO::PARAM_STR);
+                                $prepare->bindParam(':nice_url', $nice_url, PDO::PARAM_STR);
+                                $prepare->execute();
+                                $row=$prepare->fetch();
+
 								if ($row) {
 										return ['type' => 'Instance'
 											, 'id' => $row['inst_id']
@@ -86,9 +102,6 @@ class Editora {
 								}
 						}
 				}
-
-				//echo $sql;
-				$row = self::$conn->fetchAssoc($sql);
 		}
 
 		static function control_objecte($obj, $lg) {
@@ -109,11 +122,14 @@ class Editora {
 				$sql = "select c.tag
 				from omp_classes c
 				, omp_instances i
-				where i.id = $id
+				where i.id = :id
 				and i.class_id = c.id";
 
-				//echo $sql;
-				$row = self::$conn->fetchAssoc($sql);
+                $prepare = self::$conn->prepare($sql);
+                $prepare->bindParam(':id', $id, PDO::PARAM_INT);
+                $prepare->execute();
+                $row=$prepare->fetch();
+
 				if ($row) {
 						return $row['tag'];
 				}
@@ -131,8 +147,13 @@ class Editora {
 		}
 
 		static function get_nice_from_id($id = null, $lg = null) {
-				$sql = "select niceurl as id from omp_niceurl n, omp_instances i where i.id=inst_id and inst_id=" . $id . " and language='" . $lg . "'";
-				$row = self::$conn->fetchAssoc($sql);
+				$sql = "select niceurl as id from omp_niceurl n, omp_instances i where i.id=inst_id and inst_id=:id and language=:language";
+
+                $prepare = self::$conn->prepare($sql);
+                $prepare->bindParam(':id', $id, PDO::PARAM_INT);
+                $prepare->bindParam(':language', $lg, PDO::PARAM_STR);
+                $prepare->execute();
+                $row=$prepare->fetch();
 
 				if (isset($row['id']))
 						return $row['id'];
@@ -154,13 +175,17 @@ class Editora {
 				$url = str_replace("/", "", $url);
 				// echo $url;
 				if (is_numeric($url)) {//Comprovem que no tinguem URL maca per aquest id
-						$sql = "select inst_id as id, class_id, niceurl from omp_niceurl n, omp_instances i where language='" . $lg . "' and n.inst_id='" . $url . "' and inst_id=i.id";
+						$sql = "select inst_id as id, class_id, niceurl from omp_niceurl n, omp_instances i where language=:language and n.inst_id=:url and inst_id=i.id";
 						if ($_REQUEST['req_info'] == 0)
 								$sql.=" and i.status = 'O'";
 						//$result = mysql_query($sql,$dbh);
 						//if (!$result) return -2;
 						//$row = mysql_fetch_array($result, MYSQL_ASSOC);
-						$row = self::$conn->fetchAssoc($sql);
+                        $prepare = self::$conn->prepare($sql);
+                        $prepare->bindParam(':url', $url, PDO::PARAM_STR);
+                        $prepare->bindParam(':language', $lg, PDO::PARAM_STR);
+                        $prepare->execute();
+                        $row=$prepare->fetch();
 
 						if ($row) {
 								// Permanent redirection
@@ -170,7 +195,7 @@ class Editora {
 						}
 
 						//Si no tenim URL maca, l'obrim per identificador.
-						$sql = "select distinct i.id as id from omp_instances i,omp_class_attributes ca, omp_attributes a where i.id='$url' and i.class_id=ca.class_id and atri_id=a.id and a.type='Z'";
+						$sql = "select distinct i.id as id from omp_instances i,omp_class_attributes ca, omp_attributes a where i.id=:url and i.class_id=ca.class_id and atri_id=a.id and a.type='Z'";
 						if ($_REQUEST['req_info'] == 0)
 								$sql.=" and status = 'O'";
 
@@ -184,7 +209,10 @@ class Editora {
 						  }
 						 */
 
-						$row = self::$conn->fetchAssoc($sql);
+                        $prepare = self::$conn->prepare($sql);
+                        $prepare->bindParam(':url', $url, PDO::PARAM_STR);
+                        $prepare->execute();
+                        $row=$prepare->fetch();
 						if ($row) {
 								$_REQUEST['inst_id_from_url'] = $row['id'];
 								return $row['id'];
@@ -192,7 +220,7 @@ class Editora {
 				}
 
 
-				$sql = "select distinct inst_id as id from omp_niceurl n, omp_instances i where n.niceurl='" . $url . "' and inst_id=i.id";
+				$sql = "select distinct inst_id as id from omp_niceurl n, omp_instances i where n.niceurl=:url and inst_id=i.id";
 				if (isset($_REQUEST['req_info']) && $_REQUEST['req_info'] == 0)
 						$sql.=" and i.status = 'O'";
 				//echo $sql;
@@ -205,7 +233,11 @@ class Editora {
 //					return $row['id'];
 //				}
 
-				$row = self::$conn->fetchAssoc($sql);
+                $prepare = self::$conn->prepare($sql);
+                $prepare->bindParam(':url', $url, PDO::PARAM_STR);
+                $prepare->execute();
+                $row=$prepare->fetch();
+
 				if ($row) {
 						$_REQUEST['inst_id_from_url'] = $row['id'];
 						return $row['id'];
