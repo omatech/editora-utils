@@ -71,8 +71,6 @@ class Editora {
 									//return ['type' => 'ChangeLanguage', 'language' => $language];										
 								}
 						} else {// check valid urlnice
-								$nice_url = self::$conn->quote($nice_url);
-								$language = self::$conn->quote($language);
 								$sql = "select n.inst_id, n.niceurl, i.class_id, c.tag, i.key_fields nom_intern
 								from omp_niceurl n
 								, omp_instances i
