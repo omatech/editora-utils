@@ -291,4 +291,45 @@ class Editora {
 				return false;
 		}
 
+	static function get_class_from_url($url, $lg) {
+        if (isset($_REQUEST['class_from_url']) && $_REQUEST['class_from_url'] !=''){
+            return $_REQUEST['class_from_url'];
+        }
+
+        $url = str_replace("/", "", $url);
+
+        if (is_numeric($url)) {
+            $sql = "select distinct c.name as class from omp_instances i,omp_class_attributes ca, omp_attributes a,  omp_classes c where i.id=:url and i.class_id=ca.class_id and atri_id=a.id and a.type='Z' and c.id = i.class_id;";
+            if ($_REQUEST['req_info'] == 0){
+                $sql.=" and status = 'O'";
+            }
+
+            $prepare = self::$conn->prepare($sql);
+            $prepare->bindParam(':url', $url, PDO::PARAM_STR);
+            $prepare->execute();
+            $row=$prepare->fetch();
+            if ($row) {
+                $_REQUEST['class_from_url'] = $row['class'];
+                return $row['class'];
+            }
+        }
+
+
+        $sql = "select distinct c.name as class from omp_niceurl n, omp_instances i, omp_classes c where n.niceurl=:url and inst_id=i.id and c.id = i.class_id";
+        if (isset($_REQUEST['req_info']) && $_REQUEST['req_info'] == 0){
+            $sql.=" and i.status = 'O'";
+        }
+
+
+        $prepare = self::$conn->prepare($sql);
+        $prepare->bindParam(':url', $url, PDO::PARAM_STR);
+        $prepare->execute();
+        $row=$prepare->fetch();
+
+        if ($row) {
+            $_REQUEST['class_from_url'] = $row['class'];
+            return $row['class'];
+        }
+    }
+
 }
