@@ -45,33 +45,34 @@ class Editora {
 				return $prepare->fetchAll();
 		}
 
-		static function get_url_data($language, $nice_url) {
-				if (!isset($language)) {
-						return ['type' => 'Home', 'class_tag' => 'Home'];
-				} else {// tenim idioma
-						if (!isset($nice_url)) 
-						{
-								$sql="select count(*) num
+    static function get_url_data($language, $nice_url) {
+
+        if (!isset($language)) {
+            return ['type' => 'Home', 'class_tag' => 'Home'];
+        } else {// tenim idioma
+            if (!isset($nice_url))
+            {
+                $sql="select count(*) num
 								from omp_niceurl n
 								where n.language=:language
 								";
 
-                                $prepare = self::$conn->prepare($sql);
-                                $prepare->bindParam(':language', $language, PDO::PARAM_STR);
-                                $prepare->execute();
-								$row=$prepare->fetch();
+                $prepare = self::$conn->prepare($sql);
+                $prepare->bindParam(':language', $language, PDO::PARAM_STR);
+                $prepare->execute();
+                $row=$prepare->fetch();
 
-								if ($row['num']==0)
-								{// error language not found!
-										return ['type' => 'Error', 'language' => $language];
-								}
-								else
-								{// change language ok
-								  return ['type' => 'Home', 'class_tag' => 'Home', 'language' => $language];
-									//return ['type' => 'ChangeLanguage', 'language' => $language];										
-								}
-						} else {// check valid urlnice
-								$sql = "select n.inst_id, n.niceurl, i.class_id, c.tag, i.key_fields nom_intern
+                if ($row['num']==0)
+                {// error language not found!
+                    return ['type' => 'Error', 'language' => $language];
+                }
+                else
+                {// change language ok
+                    return ['type' => 'Home', 'class_tag' => 'Home', 'language' => $language];
+                    //return ['type' => 'ChangeLanguage', 'language' => $language];
+                }
+            } else {// check valid urlnice
+                $sql = "select n.inst_id, n.niceurl, i.class_id, c.tag, i.key_fields nom_intern
 								from omp_niceurl n
 								, omp_instances i
 								, omp_classes c
@@ -81,27 +82,48 @@ class Editora {
 								and i.class_id=c.id
 								";
 
-                                $prepare = self::$conn->prepare($sql);
-                                $prepare->bindParam(':language', $language, PDO::PARAM_STR);
-                                $prepare->bindParam(':nice_url', $nice_url, PDO::PARAM_STR);
-                                $prepare->execute();
-                                $row=$prepare->fetch();
+                $prepare = self::$conn->prepare($sql);
+                $prepare->bindParam(':language', $language, PDO::PARAM_STR);
+                $prepare->bindParam(':nice_url', $nice_url, PDO::PARAM_STR);
+                $prepare->execute();
+                $row=$prepare->fetch();
 
-								if ($row) {
-										return ['type' => 'Instance'
-											, 'id' => $row['inst_id']
-											, 'class_tag' => ucfirst($row['tag'])
-											, 'class_id' => $row['class_id']
-											, 'nom_intern' => $row['nom_intern']
-											, 'language' => $language
-										];
-								} else {
-										return ['type' => 'Error', 'language' => $language];
-								}
-						}
-				}
-		}
+                if ($row) {
+                    return ['type' => 'Instance'
+                        , 'id' => $row['inst_id']
+                        , 'class_tag' => ucfirst($row['tag'])
+                        , 'class_id' => $row['class_id']
+                        , 'nom_intern' => $row['nom_intern']
+                        , 'language' => $language
+                    ];
+                } else {//si no encontramos a urlnice, miramos a ver si es el inst_id
+                    $sql = "select i.id inst_id, i.class_id, c.tag, i.key_fields nom_intern
+                                    from omp_instances i, omp_classes c
+                                    where  i.id = :nice_url
+                                    and i.class_id=c.id";
 
+                    $prepare = self::$conn->prepare($sql);
+                    $prepare->bindParam(':nice_url', $nice_url, PDO::PARAM_STR);
+                    $prepare->execute();
+                    $row=$prepare->fetch();
+
+                    if ($row) {
+                        return ['type' => 'Instance'
+                            , 'id' => $row['inst_id']
+                            , 'class_tag' => ucfirst($row['tag'])
+                            , 'class_id' => $row['class_id']
+                            , 'nom_intern' => $row['nom_intern']
+                            , 'language' => $language
+                        ];
+                    } else {
+                        return ['type' => 'Error', 'language' => $language];
+                    }
+                }
+            }
+        }
+    }
+
+    
 		static function control_objecte($obj, $lg) {
 				$inst_id_from_url = self::get_inst_id_from_url($obj, $lg);
 
