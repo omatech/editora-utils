@@ -7,9 +7,9 @@ class Time {
 		static function time_to_rfc822($newstime)
 		{
 		//echo '::'.$newstime.'::';
-			list($date, $hours) = split(' ', $newstime);
-			list($year,$month,$day) = split('-',$date);
-			list($hour,$min,$sec) = split(':',$hours);
+			list($date, $hours) = explode(' ', $newstime);
+			list($year,$month,$day) = explode('-',$date);
+			list($hour,$min,$sec) = explode(':',$hours);
 			//returns the date ready for the rss feed
 			$date = date(r,mktime($hour, $min, $sec, $month, $day, $year));
 			return str_replace(',  ', ', ', $date);

@@ -192,7 +192,7 @@ class Strings {
 		
 		static function num_chars ($str, $chars)
 		{
-			$chars_arr=split(',', $chars);
+			$chars_arr=explode(',', $chars);
 			$count=0;
 
 			foreach ($chars_arr as $char)

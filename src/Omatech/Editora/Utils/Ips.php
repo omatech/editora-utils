@@ -28,7 +28,7 @@ class Ips {
 				// del usuario se comienza a mirar por el principio hasta encontrar
 				// una direcci�n ip que no sea del rango privado. En caso de no
 				// encontrarse ninguna se toma como valor el REMOTE_ADDR
-				$entries = split('[, ]', $_SERVER['HTTP_X_FORWARDED_FOR']);
+				$entries = explode('[, ]', $_SERVER['HTTP_X_FORWARDED_FOR']);
 
 				reset($entries);
 				while (list(, $entry) = each($entries)) {
