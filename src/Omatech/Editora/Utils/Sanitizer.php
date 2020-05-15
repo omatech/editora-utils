@@ -110,14 +110,14 @@ static function sanitize_float($float, $min='', $max='')
 
 static function sanitize($input, $flags = HTML, $min='', $max='')
 {
-  if($flags & UTF8) $input = my_utf8_decode($input);
-  if($flags & PARANOID) $input = sanitize_paranoid_string($input, $min, $max);
-  if($flags & INT) $input = sanitize_int($input, $min, $max);
-  if($flags & FLOAT) $input = sanitize_float($input, $min, $max);
-  if($flags & HTML) $input = sanitize_html_string($input, $min, $max);
-  if($flags & SQL) $input = sanitize_sql_string($input, $min, $max);
-  if($flags & LDAP) $input = sanitize_ldap_string($input, $min, $max);
-  if($flags & SYSTEM) $input = sanitize_system_string($input, $min, $max);
+  if($flags & UTF8) $input = self::my_utf8_decode($input);
+  if($flags & PARANOID) $input = self::sanitize_paranoid_string($input, $min, $max);
+  if($flags & INT) $input = self::sanitize_int($input, $min, $max);
+  if($flags & FLOAT) $input = self::sanitize_float($input, $min, $max);
+  if($flags & HTML) $input = self::sanitize_html_string($input, $min, $max);
+  if($flags & SQL) $input = self::sanitize_sql_string($input, $min, $max);
+  if($flags & LDAP) $input = self::sanitize_ldap_string($input, $min, $max);
+  if($flags & SYSTEM) $input = self::sanitize_system_string($input, $min, $max);
   return $input;
 }
 
