@@ -2,8 +2,6 @@
 
 namespace Omatech\Editora\Utils;
 
-class Sanitizer {
-
 define("PARANOID", 1);
 define("SQL", 2);
 define("SYSTEM", 4);
@@ -12,6 +10,8 @@ define("INT", 16);
 define("FLOAT", 32);
 define("LDAP", 64);
 define("UTF8", 128);
+
+class Sanitizer {
 
 static function my_utf8_decode($string)
 {
