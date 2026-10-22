@@ -3,7 +3,8 @@
     "description": "Utils package",
 		"minimum-stability":"dev",
     "require": {
-        "doctrine/dbal": "~2.5"
+        "php": "^8.2",
+        "doctrine/dbal": "^3.9 || ^4.0"
     },
 		"autoload": {
     "psr-4": {

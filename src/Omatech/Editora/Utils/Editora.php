@@ -2,8 +2,6 @@
 
 namespace Omatech\Editora\Utils;
 
-use PDO;
-
 class Editora {
 
 		private static $conn;
@@ -17,6 +15,7 @@ class Editora {
 							'user' => $conn['dbuser'],
 							'password' => $conn['dbpass'],
 							'host' => $conn['dbhost'],
+							'port' => $conn['dbport'] ?? 3306,
 							'driver' => 'pdo_mysql',
 							'charset' => 'utf8'
 						);
@@ -38,11 +37,7 @@ class Editora {
 				and language!=:lang
 				";
 
-                $prepare = self::$conn->prepare($sql);
-                $prepare->bindParam(':lang', $lang, PDO::PARAM_STR);
-                $prepare->bindParam(':inst_id', $inst_id, PDO::PARAM_INT);
-                $prepare->execute();
-				return $prepare->fetchAll();
+                return self::$conn->fetchAllAssociative($sql, ['lang' => $lang, 'inst_id' => $inst_id]);
 		}
 
     static function get_url_data($language, $nice_url) {
@@ -57,10 +52,7 @@ class Editora {
 								where n.language=:language
 								";
 
-                $prepare = self::$conn->prepare($sql);
-                $prepare->bindParam(':language', $language, PDO::PARAM_STR);
-                $prepare->execute();
-                $row=$prepare->fetch();
+                $row = self::$conn->fetchAssociative($sql, ['language' => $language]);
 
                 if ($row['num']==0)
                 {// error language not found!
@@ -82,11 +74,7 @@ class Editora {
 								and i.class_id=c.id
 								";
 
-                $prepare = self::$conn->prepare($sql);
-                $prepare->bindParam(':language', $language, PDO::PARAM_STR);
-                $prepare->bindParam(':nice_url', $nice_url, PDO::PARAM_STR);
-                $prepare->execute();
-                $row=$prepare->fetch();
+                $row = self::$conn->fetchAssociative($sql, ['language' => $language, 'nice_url' => $nice_url]);
 
                 if ($row) {
                     return ['type' => 'Instance'
@@ -102,10 +90,7 @@ class Editora {
                                     where  i.id = :nice_url
                                     and i.class_id=c.id";
 
-                    $prepare = self::$conn->prepare($sql);
-                    $prepare->bindParam(':nice_url', $nice_url, PDO::PARAM_STR);
-                    $prepare->execute();
-                    $row=$prepare->fetch();
+                    $row = self::$conn->fetchAssociative($sql, ['nice_url' => $nice_url]);
 
                     if ($row) {
                         return ['type' => 'Instance'
@@ -145,10 +130,7 @@ class Editora {
 				where i.id = :id
 				and i.class_id = c.id";
 
-                $prepare = self::$conn->prepare($sql);
-                $prepare->bindParam(':id', $id, PDO::PARAM_INT);
-                $prepare->execute();
-                $row=$prepare->fetch();
+                $row = self::$conn->fetchAssociative($sql, ['id' => $id]);
 
 				if ($row) {
 						return $row['tag'];
@@ -169,11 +151,7 @@ class Editora {
 		static function get_nice_from_id($id = null, $lg = null) {
 				$sql = "select niceurl as id from omp_niceurl n, omp_instances i where i.id=inst_id and inst_id=:id and language=:language";
 
-                $prepare = self::$conn->prepare($sql);
-                $prepare->bindParam(':id', $id, PDO::PARAM_INT);
-                $prepare->bindParam(':language', $lg, PDO::PARAM_STR);
-                $prepare->execute();
-                $row=$prepare->fetch();
+                $row = self::$conn->fetchAssociative($sql, ['id' => $id, 'language' => $lg]);
 
 				if (isset($row['id']))
 						return $row['id'];
@@ -196,16 +174,12 @@ class Editora {
 				// echo $url;
 				if (is_numeric($url)) {//Comprovem que no tinguem URL maca per aquest id
 						$sql = "select inst_id as id, class_id, niceurl from omp_niceurl n, omp_instances i where language=:language and n.inst_id=:url and inst_id=i.id";
-						if ($_REQUEST['req_info'] == 0)
+						if (($_REQUEST['req_info'] ?? 0) == 0)
 								$sql.=" and i.status = 'O'";
 						//$result = mysql_query($sql,$dbh);
 						//if (!$result) return -2;
 						//$row = mysql_fetch_array($result, MYSQL_ASSOC);
-                        $prepare = self::$conn->prepare($sql);
-                        $prepare->bindParam(':url', $url, PDO::PARAM_STR);
-                        $prepare->bindParam(':language', $lg, PDO::PARAM_STR);
-                        $prepare->execute();
-                        $row=$prepare->fetch();
+                        $row = self::$conn->fetchAssociative($sql, ['url' => $url, 'language' => $lg]);
 
 						if ($row) {
 								// Permanent redirection
@@ -216,7 +190,7 @@ class Editora {
 
 						//Si no tenim URL maca, l'obrim per identificador.
 						$sql = "select distinct i.id as id from omp_instances i,omp_class_attributes ca, omp_attributes a where i.id=:url and i.class_id=ca.class_id and atri_id=a.id and a.type='Z'";
-						if ($_REQUEST['req_info'] == 0)
+						if (($_REQUEST['req_info'] ?? 0) == 0)
 								$sql.=" and status = 'O'";
 
 						/* 					$result = mysql_query($sql,$dbh);
@@ -229,10 +203,7 @@ class Editora {
 						  }
 						 */
 
-                        $prepare = self::$conn->prepare($sql);
-                        $prepare->bindParam(':url', $url, PDO::PARAM_STR);
-                        $prepare->execute();
-                        $row=$prepare->fetch();
+                        $row = self::$conn->fetchAssociative($sql, ['url' => $url]);
 						if ($row) {
 								$_REQUEST['inst_id_from_url'] = $row['id'];
 								return $row['id'];
@@ -253,10 +224,7 @@ class Editora {
 //					return $row['id'];
 //				}
 
-                $prepare = self::$conn->prepare($sql);
-                $prepare->bindParam(':url', $url, PDO::PARAM_STR);
-                $prepare->execute();
-                $row=$prepare->fetch();
+                $row = self::$conn->fetchAssociative($sql, ['url' => $url]);
 
 				if ($row) {
 						$_REQUEST['inst_id_from_url'] = $row['id'];
@@ -322,14 +290,11 @@ class Editora {
 
         if (is_numeric($url)) {
             $sql = "select distinct c.name as class from omp_instances i,omp_class_attributes ca, omp_attributes a,  omp_classes c where i.id=:url and i.class_id=ca.class_id and atri_id=a.id and a.type='Z' and c.id = i.class_id;";
-            if ($_REQUEST['req_info'] == 0){
+            if (($_REQUEST['req_info'] ?? 0) == 0){
                 $sql.=" and status = 'O'";
             }
 
-            $prepare = self::$conn->prepare($sql);
-            $prepare->bindParam(':url', $url, PDO::PARAM_STR);
-            $prepare->execute();
-            $row=$prepare->fetch();
+            $row = self::$conn->fetchAssociative($sql, ['url' => $url]);
             if ($row) {
                 $_REQUEST['class_from_url'] = $row['class'];
                 return $row['class'];
@@ -343,10 +308,7 @@ class Editora {
         }
 
 
-        $prepare = self::$conn->prepare($sql);
-        $prepare->bindParam(':url', $url, PDO::PARAM_STR);
-        $prepare->execute();
-        $row=$prepare->fetch();
+        $row = self::$conn->fetchAssociative($sql, ['url' => $url]);
 
         if ($row) {
             $_REQUEST['class_from_url'] = $row['class'];
