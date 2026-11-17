@@ -31,5 +31,6 @@
       "@composer validate --no-check-publish",
       "@composer audit --locked"
     ]
-  }
+  },
+  "prefer-stable": true
 }
