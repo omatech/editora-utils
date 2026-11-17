@@ -1,1 +1,5 @@
 conf/config.php
+
+/vendor/
+/.phpunit.cache/
+/.docker/evidence/
